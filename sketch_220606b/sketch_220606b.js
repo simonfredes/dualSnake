@@ -1,7 +1,21 @@
+
+/* To Do
+Si entro por arriba, salgo por abajo (espejo)
+Si entro por abajo, salgo por arriba
+Si entro por izquierda, salgo por derecha(espejo)
+Si entro por derecha, salgo por izquierda
+Que la comida no se genere en la Serpiente*/
+
 var s;
 var f;
+
 const ancho= 10;
 const alto= 10; 
+
+var posX = 25;
+var posY = 25;
+var posX2 = 30;
+var posY2 = 25;
 
 function setup() {
   createCanvas(500, 500);
@@ -9,7 +23,7 @@ function setup() {
   f = new food();
   f.generate();
   c = new collision();
-  frameRate(60);
+  frameRate(9999);
 }
 
 
@@ -23,17 +37,12 @@ function draw() {
 
 function collision(){
   this.detect = function(){
-    console.log("Entre");
-    console.log("PosX de S: "+s.getX());
-    console.log("PosY de S: "+s.getY());
-    console.log("PosX de F: "+f.getX());
-    console.log("PosY de F: "+f.getY());
     if (s.getX() < f.getX() + ancho &&
       s.getX() + ancho > f.getX() &&
       s.getY() < f.getY() + alto &&
       alto + s.getY() > f.getY()) {
-        console.log("Detecte");
         f.generate();
+        s.crecer();
      }
   }
 }
@@ -53,8 +62,8 @@ function food(){
   this.fY=0;
   
   this.generate = function() {
-    this.fX= random(width)
-    this.fY= random(height);
+    this.fX= random(width-ancho)
+    this.fY= random(height-alto);
   }
   
   this.getX = function(){
@@ -79,6 +88,7 @@ function Snake() {
   this.longitud=50;
   this.trail = [];
   this.i = 0;
+  this.longitudPorCrecer=0;
   
   this.getX = function(){
     return this.x;
@@ -88,11 +98,35 @@ function Snake() {
   }
   
   this.update= function(){
-    this.x= this.x + this.speedx;
-    this.y= this.y + this.speedy;
+    if (this.x + this.speedx > 500) {
+      this.x = 0;
+    } else {
+      this.x= this.x + this.speedx;
+    }
+    if (this.y + this.speedy > 500) {
+      this.y = 0;
+    } else {
+      this.y= this.y + this.speedy;
+    }
+    if (this.x + this.speedx < 0) {
+      this.x = 500;
+    } else {
+      this.x= this.x + this.speedx;
+    }    
+    if (this.y + this.speedy < 0) {
+      this.y = 500;
+    } else {
+      this.y= this.y + this.speedy;
+    }
+
     this.i = this.i++;
     this.trail[this.trail.length] = this.x;
     this.trail[this.trail.length+1] = this.y;
+    
+    if (this.longitudPorCrecer>0){
+      this.longitud = this.longitud +1.5;
+      this.longitudPorCrecer--;
+    }
   }
   
   this.show = function () {
@@ -106,12 +140,18 @@ function Snake() {
     }
   }
   
+  
   this.crecer = function(){
-    this.longitud = this.longitud+50;
+    this.longitudPorCrecer += 60;
   }
+  
   this.dir = function(x,y){
    this.speedx= x;
    this.speedy= y;
   }
 
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
