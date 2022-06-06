@@ -23,6 +23,10 @@ function draw() {
 function collision(){
   this.detect = function(){
     console.log("Entre");
+    console.log("PosX de S: "+s.getX());
+    console.log("PosY de S: "+s.getY());
+    console.log("PosX de F: "+f.getX());
+    console.log("PosY de F: "+f.getY());
     if (s.getX() < f.getX() + this.ancho &&
       s.getX() + this.ancho > f.getX() &&
       s.getY() < f.getY() + this.alto &&
