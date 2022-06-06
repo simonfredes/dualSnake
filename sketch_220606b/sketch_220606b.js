@@ -9,6 +9,7 @@ function setup() {
   f = new food();
   f.generate();
   c = new collision();
+  frameRate(60);
 }
 
 
@@ -27,10 +28,10 @@ function collision(){
     console.log("PosY de S: "+s.getY());
     console.log("PosX de F: "+f.getX());
     console.log("PosY de F: "+f.getY());
-    if (s.getX() < f.getX() + this.ancho &&
-      s.getX() + this.ancho > f.getX() &&
-      s.getY() < f.getY() + this.alto &&
-      this.alto + s.getY() > f.getY()) {
+    if (s.getX() < f.getX() + ancho &&
+      s.getX() + ancho > f.getX() &&
+      s.getY() < f.getY() + alto &&
+      alto + s.getY() > f.getY()) {
         console.log("Detecte");
         f.generate();
      }
@@ -75,7 +76,7 @@ function Snake() {
   this.y=0;
   this.speedx=1;  
   this.speedy=0;
-  this.longitud=500;
+  this.longitud=50;
   this.trail = [];
   this.i = 0;
   
@@ -105,6 +106,9 @@ function Snake() {
     }
   }
   
+  this.crecer = function(){
+    this.longitud = this.longitud+50;
+  }
   this.dir = function(x,y){
    this.speedx= x;
    this.speedy= y;
